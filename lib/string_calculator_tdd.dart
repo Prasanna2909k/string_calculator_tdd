@@ -4,12 +4,25 @@ int add(String val) {
     return sum;
   }
   String customDelimiter = "";
+  List<String> splittedDelimiter = [];
   RegExp delimiter = RegExp(r'[,\n]');
+  RegExp multdelimiter = RegExp('');
   val = val.trim();
   if (val.startsWith('//')) {
     final delimiterSectionEnd = val.indexOf('\n');
     customDelimiter = val.substring(2, delimiterSectionEnd);
-    delimiter = RegExp(RegExp.escape(customDelimiter)); // Escape regex chars
+    if (customDelimiter.contains('[') && customDelimiter.contains(']')) {
+      multdelimiter = RegExp(r'\[(.*?)\]');
+      splittedDelimiter = multdelimiter
+          .allMatches(customDelimiter)
+          .map((match) => match.group(1)!)
+          .toList();
+    }
+    if (splittedDelimiter.isEmpty) {
+      delimiter = RegExp(RegExp.escape(customDelimiter));
+    } else {
+      delimiter = RegExp(splittedDelimiter.map(RegExp.escape).join('|'));
+    }
     val = val.substring(delimiterSectionEnd + 1);
   }
   if (customDelimiter == "" &&
@@ -24,7 +37,13 @@ int add(String val) {
     if (customDelimiter == "-") {
       throw FormatException("Invalid delimiter Used.");
     }
-    if (!hasValidDelimiters(val, customDelimiter)) {
+    if (splittedDelimiter.isEmpty &&
+        !hasValidDelimiters(val, customDelimiter)) {
+      throw FormatException(
+          "Invalid delimiter sequence: Custom delimiter pattern not found.");
+    }
+     if (splittedDelimiter.isNotEmpty &&
+        !hasValidDelimitersMultiple(val, splittedDelimiter)) {
       throw FormatException(
           "Invalid delimiter sequence: Custom delimiter pattern not found.");
     }
@@ -54,5 +73,12 @@ int add(String val) {
 bool hasValidDelimiters(String input, String delimiter) {
   final escaped = RegExp.escape(delimiter);
   final regex = RegExp('^-?\\d+(?:$escaped-?\\d+)*\$');
+  return regex.hasMatch(input);
+}
+
+bool hasValidDelimitersMultiple(String input, List<String> delimiter) {
+  if (delimiter.isEmpty) return false;
+  final escaped = delimiter.map(RegExp.escape).join('|');
+  final regex = RegExp(r'^-?\d+(?:(' + escaped + r')-?\d+)*$');
   return regex.hasMatch(input);
 }

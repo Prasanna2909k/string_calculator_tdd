@@ -117,9 +117,31 @@ void main() {
     });
 
     test('Custom Delimiter more than 1 chars', () {
-      print('Success Test Case 10');
+      print('Success Test Case 11');
       try {
         expect(add('//***\n1***2***3'), equals(6));
+        print('✅ Test Passed');
+      } catch (e) {
+        expect(e, isA<Exception>());
+        fail('❌ Test Failed $e');
+      }
+    });
+
+    test('Custom Multiple Delimiter Single char', () {
+      print('Success Test Case 12');
+      try {
+        expect(add('//[*][%]\n1*2%3'), equals(6));
+        print('✅ Test Passed');
+      } catch (e) {
+        expect(e, isA<Exception>());
+        fail('❌ Test Failed $e');
+      }
+    });
+
+    test('Custom Multiple Delimiter more than 1 chars', () {
+      print('Success Test Case 13');
+      try {
+        expect(add('//[*#][%#]\n1*#2%#3%#8'), equals(14));
         print('✅ Test Passed');
       } catch (e) {
         expect(e, isA<Exception>());
@@ -296,6 +318,37 @@ void main() {
       print('Exception Test Case 11');
       try {
         add('//;\n1;2;3;4;5;-6');
+        print('❌ Test Failed: Expected FormatException but none thrown');
+        fail('Expected exception not thrown');
+      } catch (e) {
+        if (e is Exception) {
+          print('✅ Test Passed: Exception thrown as expected $e');
+        } else {
+          print('❌ Test Failed: Unexpected exception type $e');
+          fail('Wrong exception type');
+        }
+      }
+    });
+
+    test('Custom Multiple Delimiter Single char', () {
+      print('Exception Test Case 12');
+      try {
+        add('//[*][#]\n1*2%3');
+        print('❌ Test Failed: Expected FormatException but none thrown');
+        fail('Expected exception not thrown');
+      } catch (e) {
+        if (e is Exception) {
+          print('✅ Test Passed: Exception thrown as expected $e');
+        } else {
+          print('❌ Test Failed: Unexpected exception type $e');
+          fail('Wrong exception type');
+        }
+      }
+    });
+    test('Custom Multiple Delimiter more than 1 chars', () {
+      print('Exception Test Case 13');
+      try {
+        add('//[*#][##]\n1*#2%#3');
         print('❌ Test Failed: Expected FormatException but none thrown');
         fail('Expected exception not thrown');
       } catch (e) {
