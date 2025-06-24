@@ -105,6 +105,27 @@ void main() {
         fail('❌ Test Failed $e');
       }
     });
+    test('Greater Than 1000 ignore', () {
+      print('Success Test Case 10');
+      try {
+        expect(add('//;\n1;2;3;1000;8000'), equals(1006));
+        print('✅ Test Passed');
+      } catch (e) {
+        expect(e, isA<Exception>());
+        fail('❌ Test Failed $e');
+      }
+    });
+
+    test('Custom Delimiter more than 1 chars', () {
+      print('Success Test Case 10');
+      try {
+        expect(add('//***\n1***2***3'), equals(6));
+        print('✅ Test Passed');
+      } catch (e) {
+        expect(e, isA<Exception>());
+        fail('❌ Test Failed $e');
+      }
+    });
   });
 
   //Exception Success Test Cases

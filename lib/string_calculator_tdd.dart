@@ -24,7 +24,7 @@ int add(String val) {
     if (customDelimiter == "-") {
       throw FormatException("Invalid delimiter Used.");
     }
-    if (hasInvalidDelimiters(val, customDelimiter)) {
+    if (!hasValidDelimiters(val, customDelimiter)) {
       throw FormatException(
           "Invalid delimiter sequence: Custom delimiter pattern not found.");
     }
@@ -39,7 +39,9 @@ int add(String val) {
     if (number < 0) {
       negatives.add(number);
     } else {
-      sum += number;
+      if (number <= 1000) {
+        sum += number;
+      }
     }
   }
   if (negatives.isNotEmpty) {
@@ -49,13 +51,8 @@ int add(String val) {
   }
 }
 
-bool hasInvalidDelimiters(String input, String delimiter) {
-  bool valid = false;
+bool hasValidDelimiters(String input, String delimiter) {
   final escaped = RegExp.escape(delimiter);
-  final regex = RegExp('[^\\-\\d$escaped]');
-  if (regex.hasMatch(input)) {
-    valid = true;
-  }
-  print(valid);
-  return valid;
+  final regex = RegExp('^-?\\d+(?:$escaped-?\\d+)*\$');
+  return regex.hasMatch(input);
 }
