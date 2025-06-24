@@ -20,26 +20,42 @@ int add(String val) {
     throw FormatException(
         "Invalid delimiter sequence: no mixed or repeated delimiters allowed.");
   }
-  if(customDelimiter != "") {
-    if(hasInvalidDelimiters(val, customDelimiter)) {
+  if (customDelimiter != "") {
+    if (customDelimiter == "-") {
+      throw FormatException("Invalid delimiter Used.");
+    }
+    if (hasInvalidDelimiters(val, customDelimiter)) {
       throw FormatException(
-        "Invalid delimiter sequence: Custom delimiter pattern not found.");
+          "Invalid delimiter sequence: Custom delimiter pattern not found.");
     }
   }
   List<String> splittedString = val.split(delimiter);
   if (splittedString.any((element) => element.trim().isEmpty)) {
     throw FormatException("Empty values between delimiters are not allowed.");
   }
-
+  final List<int> negatives = [];
   for (var part in splittedString) {
     int number = int.tryParse(part.trim()) ?? 0; // Safely parse to int
-    sum += number;
+    if (number < 0) {
+      negatives.add(number);
+    } else {
+      sum += number;
+    }
   }
-  return sum;
+  if (negatives.isNotEmpty) {
+    throw Exception("Negative Numbers not allowed < ${negatives.join(',')} >");
+  } else {
+    return sum;
+  }
 }
 
 bool hasInvalidDelimiters(String input, String delimiter) {
+  bool valid = false;
   final escaped = RegExp.escape(delimiter);
-  final regex = RegExp('[^\\d$escaped]');
-  return regex.hasMatch(input);
+  final regex = RegExp('[^\\-\\d$escaped]');
+  if (regex.hasMatch(input)) {
+    valid = true;
+  }
+  print(valid);
+  return valid;
 }

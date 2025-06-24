@@ -270,5 +270,21 @@ void main() {
         }
       }
     });
+
+    test('Negative Value Case', () {
+      print('Exception Test Case 11');
+      try {
+        add('//;\n1;2;3;4;5;-6');
+        print('❌ Test Failed: Expected FormatException but none thrown');
+        fail('Expected exception not thrown');
+      } catch (e) {
+        if (e is Exception) {
+          print('✅ Test Passed: Exception thrown as expected $e');
+        } else {
+          print('❌ Test Failed: Unexpected exception type $e');
+          fail('Wrong exception type');
+        }
+      }
+    });
   });
 }
