@@ -10,20 +10,20 @@ void main() {
       print('Success Test Case 1');
       try {
         expect(add(''), equals(0));
-        print('Test passed');
+        print('✅ Test Passed');
       } catch (e) {
         expect(e, isA<Exception>());
-        fail('Test Failed');
+        fail('❌ Test Failed $e');
       }
     });
     test('Single Digit Case', () {
       print('Success Test Case 2');
       try {
         expect(add('5'), equals(5));
-        print('Test passed');
+        print('✅ Test Passed');
       } catch (e) {
         expect(e, isA<Exception>());
-        fail('Test Failed');
+        fail('❌ Test Failed $e');
       }
     });
     test('Comma Seperated Two Value Case', () {
@@ -31,10 +31,10 @@ void main() {
 
       try {
         expect(add('5,7'), equals(12));
-        print('Test passed');
+        print('✅ Test Passed');
       } catch (e) {
         expect(e, isA<Exception>());
-        fail('Test Failed');
+        fail('❌ Test Failed $e');
       }
     });
 
@@ -43,35 +43,66 @@ void main() {
 
       try {
         expect(add('\n5'), equals(5));
-        print('Test passed');
+        print('✅ Test Passed');
       } catch (e) {
         expect(e, isA<Exception>());
-        fail('Test Failed');
+        fail('❌ Test Failed $e');
       }
     });
-
 
     test('New Line Seperated Two Value Case', () {
       print('Success Test Case 5');
 
       try {
         expect(add('5\n7'), equals(12));
-        print('Test passed');
+        print('✅ Test Passed');
       } catch (e) {
         expect(e, isA<Exception>());
-        fail('Test Failed');
+        fail('❌ Test Failed $e');
       }
     });
 
     test('Multiple Values with NewLine and Comma', () {
       print('Success Test Case 6');
       try {
-        expect(
-            add('5,8\n7\n3,2\n22,44,121\n812'), equals(1024));
-        print('Test passed');
+        expect(add('5,8\n7\n3,2\n22,44,121\n812'), equals(1024));
+        print('✅ Test Passed');
       } catch (e) {
         expect(e, isA<Exception>());
-        fail('Test Failed');
+        fail('❌ Test Failed $e');
+      }
+    });
+
+    test('Custom Delimiter Case', () {
+      print('Success Test Case 7');
+      try {
+        expect(add('//;\n1;2'), equals(3));
+        print('✅ Test Passed');
+      } catch (e) {
+        expect(e, isA<Exception>());
+        fail('Test Failed $e');
+      }
+    });
+
+    test('Custom Delimiter Case Single Value', () {
+      print('Success Test Case 8');
+      try {
+        expect(add('//;\n1'), equals(1));
+        print('✅ Test Passed');
+      } catch (e) {
+        expect(e, isA<Exception>());
+        fail('❌ Test Failed $e');
+      }
+    });
+
+    test('Custom Delimiter Case Multiple Value', () {
+      print('Success Test Case 9');
+      try {
+        expect(add('//;\n1;2;3;7'), equals(13));
+        print('✅ Test Passed');
+      } catch (e) {
+        expect(e, isA<Exception>());
+        fail('❌ Test Failed $e');
       }
     });
   });
@@ -88,7 +119,7 @@ void main() {
         fail('Expected exception not thrown');
       } catch (e) {
         if (e is FormatException) {
-          print('✅ Test Passed: FormatException thrown as expected');
+          print('✅ Test Passed: FormatException thrown as expected $e');
         } else {
           print('❌ Test Failed: Unexpected exception type $e');
           fail('Wrong exception type');
@@ -104,7 +135,7 @@ void main() {
         fail('Expected exception not thrown');
       } catch (e) {
         if (e is FormatException) {
-          print('✅ Test Passed: FormatException thrown as expected');
+          print('✅ Test Passed: FormatException thrown as expected $e');
         } else {
           print('❌ Test Failed: Unexpected exception type $e');
           fail('Wrong exception type');
@@ -120,7 +151,7 @@ void main() {
         fail('Expected exception not thrown');
       } catch (e) {
         if (e is FormatException) {
-          print('✅ Test Passed: FormatException thrown as expected');
+          print('✅ Test Passed: FormatException thrown as expected $e');
         } else {
           print('❌ Test Failed: Unexpected exception type $e');
           fail('Wrong exception type');
@@ -136,7 +167,7 @@ void main() {
         fail('Expected exception not thrown');
       } catch (e) {
         if (e is FormatException) {
-          print('✅ Test Passed: FormatException thrown as expected');
+          print('✅ Test Passed: FormatException thrown as expected $e');
         } else {
           print('❌ Test Failed: Unexpected exception type $e');
           fail('Wrong exception type');
@@ -152,7 +183,7 @@ void main() {
         fail('Expected exception not thrown');
       } catch (e) {
         if (e is FormatException) {
-          print('✅ Test Passed: FormatException thrown as expected');
+          print('✅ Test Passed: FormatException thrown as expected $e');
         } else {
           print('❌ Test Failed: Unexpected exception type $e');
           fail('Wrong exception type');
@@ -168,7 +199,7 @@ void main() {
         fail('Expected exception not thrown');
       } catch (e) {
         if (e is FormatException) {
-          print('✅ Test Passed: FormatException thrown as expected');
+          print('✅ Test Passed: FormatException thrown as expected $e');
         } else {
           print('❌ Test Failed: Unexpected exception type $e');
           fail('Wrong exception type');
@@ -176,7 +207,7 @@ void main() {
       }
     });
 
-    test('Two Value with NewLine and Comma', () {
+    test('Multiple Value with NewLine and Comma', () {
       print('Exception Test Case 7');
       try {
         add(',\n5,\n\n8,7,3,2,22,\n,44,121\n\n812');
@@ -184,7 +215,55 @@ void main() {
         fail('Expected exception not thrown');
       } catch (e) {
         if (e is FormatException) {
-          print('✅ Test Passed: FormatException thrown as expected');
+          print('✅ Test Passed: FormatException thrown as expected $e');
+        } else {
+          print('❌ Test Failed: Unexpected exception type $e');
+          fail('Wrong exception type');
+        }
+      }
+    });
+
+    test('Custom Delimiter Case', () {
+      print('Exception Test Case 8');
+      try {
+        add('//;\n1:2');
+        print('❌ Test Failed: Expected FormatException but none thrown');
+        fail('Expected exception not thrown');
+      } catch (e) {
+        if (e is FormatException) {
+          print('✅ Test Passed: FormatException thrown as expected $e');
+        } else {
+          print('❌ Test Failed: Unexpected exception type $e');
+          fail('Wrong exception type');
+        }
+      }
+    });
+
+    test('Custom Delimiter Case Single Value', () {
+      print('Exception Test Case 9');
+      try {
+        add('//;\n1;');
+        print('❌ Test Failed: Expected FormatException but none thrown');
+        fail('Expected exception not thrown');
+      } catch (e) {
+        if (e is FormatException) {
+          print('✅ Test Passed: FormatException thrown as expected $e');
+        } else {
+          print('❌ Test Failed: Unexpected exception type $e');
+          fail('Wrong exception type');
+        }
+      }
+    });
+
+    test('Custom Delimiter Case Multiple Value', () {
+      print('Exception Test Case 10');
+      try {
+        add('//;\n1;2;3:4;5:6');
+        print('❌ Test Failed: Expected FormatException but none thrown');
+        fail('Expected exception not thrown');
+      } catch (e) {
+        if (e is FormatException) {
+          print('✅ Test Passed: FormatException thrown as expected $e');
         } else {
           print('❌ Test Failed: Unexpected exception type $e');
           fail('Wrong exception type');
